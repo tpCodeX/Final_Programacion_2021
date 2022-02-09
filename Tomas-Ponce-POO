@@ -1,0 +1,79 @@
+# superclase Persona.
+class Persona:
+    # metodo constructor para agregar los atributos a la Superclase.
+    def __init__(self, nombre, edad, altura, peso):
+        self.nombre = nombre
+        self.edad = edad
+        self.altura = altura
+        self.peso = peso
+
+    def mostrarDatos(self):  # método para mostrar los datos de la persona.
+        return (f"{self.nombre} tiene {self.edad} años. Mide {self.altura} cms y pesa {self.peso} kgs")
+
+# subclase Alumno de la Superclase Persona.
+
+
+# creo la subclase y le paso, como parametro, la superclase.
+class Alumno(Persona):
+    # inicio el método constructor propio de la subclase.
+    def __init__(self, nombre, edad, altura, peso, carrera, año, materias):
+        # Herencia de los atributos y metodos de la superclase Persona:
+        # invoco el constructor de la superclase con la funcion super()
+        super().__init__(nombre, edad, altura, peso)
+        # nuevos atributos de la subclase.
+        self.carrera = carrera
+        self.año = año
+        self.materias = materias
+        # nuevo metodo de la SubClase
+
+    def mostrarDatosAlumno(self):
+        return (f'''El alumno {self.nombre} cursa la carreara {carrera} en {año} año.
+        El alumno cursa las siguientes asignaturas: {materias}.''')
+
+# subclase Profesor de la Superclase Persona.
+
+
+class Profesor(Persona):
+    def __init__(self, nombre, edad, altura, peso, asig, año, sueldo, turno):
+        super().__init__(nombre, edad, altura, peso)
+        self.asig = asig
+        self.año = año
+        self.sueldo = sueldo
+        self.turno = turno
+
+    def mostrarDatosProfe(self):
+        return (f'{self.nombre} es profesor de {self.asig}. Su sueldo es de {self.sueldo} pesos mensuales y trabaja en el turno {self.turno}')
+
+
+# Pido las variables a ingresar para instanciar el objeto.
+# ----Atributos Objeto de clase Alumno.
+nombre = "Tomas Ponce"  # input("Ingrese su nombre: ")
+edad = "22"  # input("Ingrese su edad: ")
+altura = "191"  # input("Ingrese su altura: ")
+peso = "115"  # input("Ingrese su peso: ")
+materias = ["Programación", "PP1", "Ingles", "SSAA",
+            "Req. de Software.", "Arquitectura", "etc."]
+año = "1º"  # input("Ingrese su año de cursado (1º , 2º , 3º) : ")
+carrera = "Diseño de Software"  # input("Ingrese su carreara: ")
+
+# ----Atributos Objeto de clase Profesor.
+nombreP = "Roberto Carlos"  # input("Ingrese su nombre: ")
+edadP = "44"  # input("Ingrese su edad: ")
+alturaP = "180"  # input("Ingrese su altura: ")
+pesoP = "100"  # input("Ingrese su peso: ")
+asignaturaP = "Ingles"  # input("Ingrese su asignatura: ")
+añoP = "1º"  # input("Ingrese el año de su asignatura: ")
+sueldoP = "60k"  # input("Ingrese el monto de su salario mensual: ")
+turnoP = "Noche"  # input("Ingrese el turno de su clase: ")
+
+
+# Instancio el objeto con las variables cargadas previamente.
+alumno1 = Alumno(nombre, edad, altura, peso, carrera, año, materias)
+profe = Profesor(nombreP, edadP, alturaP, pesoP,
+                 asignaturaP, añoP, sueldoP, turnoP)
+
+print(alumno1.mostrarDatos())
+print(alumno1.mostrarDatosAlumno())
+
+print(profe.mostrarDatos())
+print(profe.mostrarDatosProfe())

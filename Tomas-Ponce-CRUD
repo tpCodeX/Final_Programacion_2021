@@ -1,0 +1,225 @@
+import os
+
+
+def ingresar_nombre():
+    """ funcion para ingresar un nombre """
+    while True:
+        nombre = input("Ingrese el nombre del estudiante: ")
+        if nombre == "" or nombre == " ":
+            print("el nombre no puede estar vacio")
+        else:
+            return nombre
+
+
+def ingresar_edad():  # funcion para añadir la edad del alumno a la lista.
+    nota = int(input("Ingrese la edad del estudiante: "))
+    return nota
+
+
+def ingresar_nota():
+    """ funcion para ingresar una nota """
+    while True:
+        try:
+            nota = float(input("Ingrese la nota del estudiante (0-10): "))
+            if 0 <= nota <= 10:
+                return nota
+            else:
+                print("la nota tiene que estar entre 0 y 10")
+        except:
+            print("la nota tiene que ser un valor numerico")
+
+
+def promedio_notas(lista_notas):
+    """ funcion para mostrar el  promedio de notas de los estudiantes """
+    if len(estudiantes) == 0:
+        return -1
+    return sum(lista_notas)/len(lista_notas)
+
+
+def buscarAlumno(alumno, lista):
+    # Funcion para encontrar un alumno por su nombre. (tal cual aparece en la lista.)
+    if alumno in lista:  # verifico si el alumno se encuentra en la lista.
+        try:
+            return lista.index(alumno)
+        except:  # uso try_except para evitar error si el alumno no se encuentra.
+            return None  # Si el alumno no se encuentra, retorna indice=None.
+
+
+def cambiarNota(alumno, listaAlumnos, listaNotas):
+    # Funcion para cambiarle la nota a un alumno.
+    # pido al usuario la nueva nota.
+    nuevaNota = float(input("Ingrese la nueva nota: "))
+    if 0 <= nuevaNota <= 10:  # determino si la nota es valida(entre 0 y 10)
+        listaNotas[buscarAlumno(alumno, listaAlumnos)] = nuevaNota
+    else:
+        print("La nota debe estar comprendida entre 0 y 10.")
+
+
+def ordenarPorNombre(listaAlumnos, listaNotas):
+    # Funcion para ordenar  la lista por orden alfabético.
+    return sorted(tuple(zip(listaAlumnos, listaNotas)))
+    # Usando la funcion ZIP y TUPLE, junto las dos listas en una tupla que corresponde al nombre del alumno y la nota.
+    # La ordeno alfabeticamente usando la funcion Sorted, que al evaluar una String, lo hace en orden alfabético.
+
+
+def ordenarPorNotas(listaNotas, listaAlumnos):
+    # Funcion para ordenar la lista por notas de forma ascendente o descendente.
+    # preguntar al usuario que orden desea.
+    orden = int(
+        input("Desea ordenar las notas de forma ascendente o descendente? (1/2) : "))
+    if orden == 1:
+        # ordenar de forma ascendente 0..1..2..3..
+        return sorted(tuple(zip(listaNotas, listaAlumnos)))
+    elif orden == 2:
+        # ordenar de forma descendente 10..9..8..7..
+        return sorted(tuple(zip(listaNotas, listaAlumnos)), reverse=True)
+    else:
+        # Error.
+        return "Opcion invalida. Elija 1 para Ascendente y 2 para Descendente."
+    # Uso la funcion Zip y Tuple para convertir las listas de Notas y Alumnos (en ese orden) en una tupla.
+    # Uso la funcion Sorted para ordenarlas de forma ascendente o descendiente con o sin el argumento "reverse=True", respectivamente.
+
+
+def deletiarAlumno(alumno, listaAlumnos, listaNotas):
+    # funcion para eliminar un alumno y su nota de las respectivas listas.
+    # Busco el indice del alumno a eliminar.
+    indice = listaAlumnos.index(alumno)
+    # Elimino de la lista al alumno con la funcion pop().
+    alumno_eliminado = listaAlumnos.pop(indice)
+    # Esta funcion guarda el valor eliminado, para poder volver a agregarlo si lo necesito.
+    nota_eliminada = listaNotas.pop(indice)
+    eliminado = [alumno_eliminado, nota_eliminada]
+    return tuple(eliminado)
+
+
+def promedioEdades(listaEdades):
+    promedio = sum(listaEdades)/len(listaEdades)
+    return promedio
+
+
+def Menu():
+    print("""-------------------------------------------------------
+    Selecciona una opción...
+    1 - Agregar estudiante
+    2 - Buscar estudiante por nombre
+    3 - Modificar nota
+    4 - Listado ordenados por nombres
+    5 - Listado ordenados por notas
+    6 - Mostrar promedio de las notas
+    7 - Borrar un estudiante
+    8 - Calcular la edad promedio de los estudiantes
+    0 - Salir""")
+
+# --------------- Programa principal----------------------------
+
+
+# definimos la lista que contendra una lista con cada estudiante
+estudiantes = []
+# definimos la lista que contendra las notas de cada estudiante
+notas = []
+edades = []
+
+while True:
+    Menu()
+
+    try:
+        opcion = int(input("Ingrese el número de la opción escogida: "))
+    except:
+        opcion = -1
+
+    if opcion == 1:
+        i = True
+        # Ciclo para preguntar si quiero agregar otro estudiante o no antes de enviarme al menú principal.
+        while i:
+
+            print(
+                "Usted deberá ingresar el nombre del alumno con el siguiente formato: 'Apellido, Nombre' ")
+            estudiantes.append(ingresar_nombre())
+            edades.append(ingresar_edad())
+            notas.append(ingresar_nota())
+            # muestro a los alumnos y sus notas en forma de tupla con la funcion Zip.
+            print(tuple(zip(estudiantes, notas)))
+            # preguntar al usuario si quiere agregar otro alumno.
+            cont = input("Desea agregar otro alumno? (S/N): ")
+            if cont.upper() == "S":
+                continue  # volver al inicio del ciclo.
+            else:
+                # Terminar el ciclo si el usuario decide no agregar más alumnos.
+                i = False
+        os.system("pause")
+        os.system("cls")
+
+    elif opcion == 2:
+        i = True
+        while i:  # Ciclo para buscar varios alumnos.
+            # consulto al usuario que alumno desea buscar.
+            alumno = input("Escriba el nombre del alumno que desea buscar: ")
+            # guardo el indice de posicion del alumno buscado.
+            indice = buscarAlumno(alumno, estudiantes)
+            print(f"El alumno {alumno} se encuentra en el indice {indice}")
+            cont = input("Desea buscar otro alumno? (S/N): ")
+            if cont.upper() == "S":
+                continue
+            else:
+                i = False
+        os.system("pause")
+        os.system("cls")  # borrar la consola para volver a invocar el menu.
+
+    elif opcion == 3:
+        i = True
+        while i:
+            print("La nota debe estar comprendida entre 0 y 10.")
+            print("Las notas actuales son: ")
+            print(tuple(zip(estudiantes, notas)))
+            alumno = input("Ingrese el alumno al que desea cambiarle la nota.")
+            cambiarNota(alumno, estudiantes, notas)
+            print("Las nuevas notas son: ")
+            print(tuple(zip(estudiantes, notas)))
+            cont = input("Desea cambiar otra nota? (S/N): ")
+            if cont.upper() == "S":
+                continue
+            else:
+                i = False
+        os.system("pause")
+        os.system("cls")
+
+    elif opcion == 4:
+        print("Lista de estudiantes por orden alfabético: ")
+        print(ordenarPorNombre(estudiantes, notas))
+        os.system("pause")
+        os.system("cls")
+
+    elif opcion == 5:
+        print("Lista de alumnos ordenada por notas:")
+        print(ordenarPorNotas(notas, estudiantes))
+        os.system("pause")
+        os.system("cls")
+
+    elif opcion == 6:
+
+        promedio = promedio_notas(notas)
+        print(f"El promedio de notas del curso es de: {promedio}")
+        os.system("pause")
+        os.system("cls")
+
+    elif opcion == 7:
+        alumno = input("Escriba el nombre del alumno que desea eliminar: ")
+        print(
+            f"Ha eliminado al alumno {deletiarAlumno(alumno,estudiantes,notas)}")
+        print(f""" {"#"*32} 
+        La nueva lista es: """)
+        print(estudiantes)
+        print(notas)
+        os.system("pause")
+        os.system("cls")
+
+    elif opcion == 8:
+        print(f"""El promedio de las notas del curso es de: {promedioEdades(edades) años.}""")
+        os.system("pause")
+        os.system("cls")
+    elif opcion == 0:
+        print("######### El programa finalizó. #########")
+        os.system("pause")
+        break
+    else:
+        print("La opción ingresada no es correcta, indica una opción correcta")
